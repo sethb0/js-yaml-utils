@@ -17,5 +17,10 @@
   "license": "MIT",
   "dependencies": {
     "js-yaml": "^3.8.3"
+  },
+  "devDependencies": {
+    "@sethb0/eslint-config-mfllc": "^0.1.0",
+    "babel-eslint": "^7.2.3",
+    "eslint": "^3.19.0"
   }
 }
