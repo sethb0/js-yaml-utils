@@ -1,0 +1,21 @@
+{
+  "name": "@sethb0/yaml-utils",
+  "version": "0.1.0",
+  "description": "utilities for working with YAML files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "yaml"
+  ],
+  "repository": "sethb0/js-yaml-utils",
+  "author": "Seth Blumberg <sethb@pobox.com>",
+  "bugs": {
+    "url": "https://github.com/sethb0/js-yaml-utils/issues"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "js-yaml": "^3.8.3"
+  }
+}
