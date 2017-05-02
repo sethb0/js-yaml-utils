@@ -1,6 +1,6 @@
 {
   "name": "@sethb0/yaml-utils",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "utilities for working with YAML files",
   "main": "index.js",
   "scripts": {
@@ -15,6 +15,9 @@
     "url": "https://github.com/sethb0/js-yaml-utils/issues"
   },
   "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.5.0"
+  },
   "peerDependencies": {
     "js-yaml": "^3.8.3"
   },
