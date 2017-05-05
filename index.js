@@ -36,3 +36,14 @@ module.exports.dump = function dump (path, data) {
                    yaml.safeDump(data, { schema: SCHEMA, styles: { '!!null': 'canonical' } }),
                    'utf8');
 };
+
+module.exports.dumpStream = Promise.promisify(
+  function dumpStream (stream, data, cb) {
+    const out = yaml.safeDump(data, { schema: SCHEMA, styles: { '!!null': 'canonical' } });
+    stream.on('error', cb);
+    fs.write(stream, out, 'utf8', (e) => {
+      stream.removeListener('error', cb);
+      return cb(e);
+    });
+  }
+);
