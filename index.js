@@ -1,5 +1,5 @@
-const Promise = require('bluebird');
 const fs = require('fs');
+const { promisify } = require('util');
 const yaml = require('js-yaml');
 
 const SCHEMA = yaml.Schema.create([yaml.DEFAULT_SAFE_SCHEMA], [
@@ -19,27 +19,36 @@ const SCHEMA = yaml.Schema.create([yaml.DEFAULT_SAFE_SCHEMA], [
 module.exports.SCHEMA = SCHEMA;
 
 module.exports.loadSync = function loadSync (path) {
-  return yaml.safeLoad(fs.readFileSync(path, { encoding: 'utf8' }),
-                       { schema: SCHEMA, filename: path });
+  return yaml.safeLoad(
+    fs.readFileSync(path, { encoding: 'utf8' }),
+    { schema: SCHEMA, filename: path },
+  );
 };
 
 module.exports.dumpSync = function dumpSync (path, data) {
-  fs.writeFileSync(path,
-                   yaml.safeDump(data, { schema: SCHEMA, styles: { '!!null': 'canonical' } }),
-                   'utf8');
+  fs.writeFileSync(
+    path,
+    yaml.safeDump(data, { schema: SCHEMA, styles: { '!!null': 'canonical' } }),
+    'utf8',
+  );
 };
 
-const writeFile = Promise.promisify(fs.writeFile);
+const writeFile = promisify(fs.writeFile);
 
 module.exports.dump = function dump (path, data) {
-  return writeFile(path,
-                   yaml.safeDump(data, { schema: SCHEMA, styles: { '!!null': 'canonical' } }),
-                   'utf8');
+  return writeFile(
+    path,
+    yaml.safeDump(data, { schema: SCHEMA, styles: { '!!null': 'canonical' } }),
+    'utf8',
+  );
 };
 
-module.exports.dumpStream = Promise.promisify(
+module.exports.dumpStream = promisify(
   function dumpStream (stream, data, cb) {
-    const out = yaml.safeDump(data, { schema: SCHEMA, styles: { '!!null': 'canonical' } });
+    const out = yaml.safeDump(
+      data,
+      { schema: SCHEMA, styles: { '!!null': 'canonical' } },
+    );
     stream.on('error', cb);
     stream.write(out, 'utf8', (e) => {
       stream.removeListener('error', cb);
