@@ -33,7 +33,13 @@ module.exports.dumpSync = function dumpSync (path, data) {
   );
 };
 
+const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
+
+module.exports.load = function load (path) {
+  return readFile(path, { encoding: 'utf8' })
+    .then((data) => yaml.safeLoad(data, { schema: SCHEMA, filename: path }));
+};
 
 module.exports.dump = function dump (path, data) {
   return writeFile(
@@ -49,7 +55,7 @@ module.exports.dumpStream = promisify(
       data,
       { schema: SCHEMA, styles: { '!!null': 'canonical' } },
     );
-    stream.on('error', cb);
+    stream.once('error', cb);
     stream.write(out, 'utf8', (e) => {
       stream.removeListener('error', cb);
       return cb(e);
