@@ -18,6 +18,11 @@ const SCHEMA = yaml.Schema.create([yaml.DEFAULT_SAFE_SCHEMA], [
 ]);
 module.exports.SCHEMA = SCHEMA;
 
+function dumpString (data) {
+  return yaml.safeDump(data, { schema: SCHEMA, styles: { '!!null': 'canonical' } });
+}
+module.exports.dumpString = dumpString;
+
 module.exports.loadSync = function loadSync (path) {
   return yaml.safeLoad(
     fs.readFileSync(path, { encoding: 'utf8' }),
@@ -26,11 +31,7 @@ module.exports.loadSync = function loadSync (path) {
 };
 
 module.exports.dumpSync = function dumpSync (path, data) {
-  fs.writeFileSync(
-    path,
-    yaml.safeDump(data, { schema: SCHEMA, styles: { '!!null': 'canonical' } }),
-    'utf8',
-  );
+  fs.writeFileSync(path, dumpString(data), 'utf8');
 };
 
 const readFile = promisify(fs.readFile);
@@ -42,21 +43,13 @@ module.exports.load = function load (path) {
 };
 
 module.exports.dump = function dump (path, data) {
-  return writeFile(
-    path,
-    yaml.safeDump(data, { schema: SCHEMA, styles: { '!!null': 'canonical' } }),
-    'utf8',
-  );
+  return writeFile(path, dumpString(data), 'utf8');
 };
 
 module.exports.dumpStream = promisify(
   function dumpStream (stream, data, cb) {
-    const out = yaml.safeDump(
-      data,
-      { schema: SCHEMA, styles: { '!!null': 'canonical' } },
-    );
     stream.once('error', cb);
-    stream.write(out, 'utf8', (e) => {
+    stream.write(dumpString(data), 'utf8', (e) => {
       stream.removeListener('error', cb);
       return cb(e);
     });
