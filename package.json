@@ -1,6 +1,6 @@
 {
   "name": "@sethb0/yaml-utils",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "utilities for working with YAML files",
   "main": "index.js",
   "scripts": {},
